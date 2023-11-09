@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grid View</title>
+  </head>
+  <body><div id="root" class="flex">
+    <div id="react-root"></div>
+    <div id="stats-widget" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 p-4 border rounded mt-4 bg-white shadow-lg">
+      <div id="cell-hover-stats"></div>
+      <div id="cell-stats"></div>
+      <h2 class="text-lg font-bold mb-2">Grid Controls</h2>
+      
+      <div class="mb-4">
+        <input type="number" id="enter-number" name="clear-row" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Enter number to fill 0 row">
+      </div>
+      
+      <h2 class="text-lg font-bold mt-4 mb-2">Cell Actions</h2>
+      <div id="cell-actions" class="mb-4">
+        <!-- Placeholder for cell actions -->
+      </div>
+      <h2 class="text-lg font-bold mt-4 mb-2">Row Actions</h2>
+      <div id="row-actions" class="mb-4">
+        <!-- Placeholder for row actions -->
+      </div>
+      <h2 class="text-lg font-bold mt-4 mb-2">Grid Actions</h2>
+      <div id="grid-actions" class="mb-4">
+        <!-- Placeholder for grid actions -->
+      </div>
+    </div>
+    <div id="main" class="p-4 sm:ml-64">
+      <div id="grids" class="object-top flex justify-center">
+        <div id="default-grid-view" class="grid-container"></div>
+        <div id="grid-view" class="grid-container"></div>
+      </div>
+    </div>
+    
+  </div>
+
+    <script type="module" src="/main.jsx"></script>
+  </body>
+</html>
