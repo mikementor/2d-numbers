@@ -1,9 +1,9 @@
 import { Grid } from "./grid";
 export class GridView {
     constructor(grid) {
-      if (!(grid instanceof Grid)) {
-        throw new Error('View expects an instance of Grid');
-      }
+      // if (!(grid instanceof Grid)) {
+      //   throw new Error('View expects an instance of Grid');
+      // }
       this.grid = grid;
     }
   
