@@ -65,6 +65,8 @@ export class HistoryGrid {
   }
   clear() {
     this.grid = [];
+    this.history =[[]]
+    this.currentPointer = 0;
   }
 
   // Method to compute the number for a cell

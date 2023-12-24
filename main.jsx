@@ -44,7 +44,7 @@ class DataGrid {
     this.grid.appendNumberAsBinary(number);
     this.render();
   }
-  clear() {
+  clear() {// clears history as well, dont use casually
     this.grid.clear();
     this.render();
   }
@@ -127,7 +127,7 @@ class DataGrid {
       gridViewElement.appendChild(rowElement);
     });
   }
-  
+
   moveGridLeft() {
     this.offsetX -= 1;
   }
@@ -152,6 +152,11 @@ grid.render();
 document.querySelector("#enter-number").addEventListener("change", (e) => {
   grid.clear();
   grid.appendNumberAsBinary(parseInt(e.target.value));
+});
+document.querySelector("#clear-grid").addEventListener("click", (e) => {
+  console.log('clear-grid')
+  grid.clear();
+  grid.render();
 });
 
 // Function to update the stats widget
