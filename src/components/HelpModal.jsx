@@ -25,7 +25,8 @@ const HelpModal = () => {
           <div className="bg-white p-4 rounded-lg">
             <h2 className="text-2xl font-bold mb-4">Hotkeys</h2>
             <ul className="list-disc pl-6">
-              <li className="mb-2"><kbd>Ctrl</kbd> + <kbd>S</kbd> - Save</li>
+              <li className="mb-2"><kbd>Alt</kbd> + <kbd>→</kbd> - History - next</li>
+              <li className="mb-2"><kbd>Alt</kbd> + <kbd>←</kbd> - History - previous</li>
             </ul>
             <button
               className="mt-4 bg-gray-700 text-white px-3 py-2 rounded"
