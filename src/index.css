@@ -100,3 +100,42 @@ kbd {
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2), 0 0 0 2px #fff inset;
   background-color: #f7f7f7;
 }
+.column-actions-selection{
+  display: flex;
+}
+.column-selection-cell {
+  user-select: none;
+  font-size: 1vw;
+  width: 50px; /* Width of each cell */
+  height: 50px; /* Height of each cell */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc; /* Cell border */
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  border-bottom: #333 solid 1px;
+}
+
+.row-actions-selection{
+  float:right;
+}
+.row-selection-cell {
+  user-select: none;
+  font-size: 1vw;
+  width: 50px; /* Width of each cell */
+  height: 50px; /* Height of each cell */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc; /* Cell border */
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  border-left: #333 solid 1px;
+}
