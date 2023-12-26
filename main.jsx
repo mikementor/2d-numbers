@@ -9,6 +9,8 @@ import { setHistoryControls } from "./src/interactions/grid-history.js";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import HelpModal from "./src/components/HelpModal.jsx";
+import {mouse_tool} from './src/features/mouse-tool.js';
+
 // react migration
 ReactDOM.createRoot(document.getElementById("react-root")).render(
   <React.StrictMode>
@@ -90,7 +92,7 @@ class DataGrid {
         const { x, y } = grid.viewToGrid({ x: columnIndex, y: rowIndex });
         cellElement.setAttribute("data-x", x);
         cellElement.setAttribute("data-y", y);
-        cellElement.onclick = () => updateStats({ x, y }, cellValue);
+        cellElement.onclick = (e) => onCellClick({ x, y }, cellValue,grid,e);
         cellElement.onmouseover = () => updateHoverStats({ x, y }, cellValue);
         if (cellValue != 0) cellElement.textContent = cellValue;
         else cellElement.textContent = "";
@@ -160,7 +162,7 @@ document.querySelector("#clear-grid").addEventListener("click", (e) => {
 });
 
 // Function to update the stats widget
-function updateStats({ x, y }, value) {
+function onCellClick({ x, y }, value,grid,e) {
   const cellStats = document.getElementById("cell-stats");
   // const value = grid.getValue(x, y);
   // const rowValue = grid.computeRowValue(x); // You'll need to implement this method in Grid class
@@ -172,7 +174,9 @@ function updateStats({ x, y }, value) {
   `;
   const currentCell = grid.getCurrentCell();
   const gridCellCurrent = grid.getValue(currentCell.x, currentCell.y);
-  grid.addValue(currentCell.x, currentCell.y, 1);
+
+  // grid.addValue(currentCell.x, currentCell.y, 1);
+  mouse_tool.on_click(currentCell,grid,e);
   grid.render();
 }
 function updateHoverStats({ x, y }, value) {
@@ -185,6 +189,15 @@ function updateHoverStats({ x, y }, value) {
   `;
 }
 
+
+const mouse_tools_selects = document.querySelectorAll('.mouse-tool-select');
+const selected_tool = document.querySelector('.selected-mouse-tool');
+mouse_tools_selects.forEach(select => {
+  select.addEventListener('click', function handleClick(e) {
+    mouse_tool.switch_tool(e.target.getAttribute('tool-type'))
+    selected_tool.innerHTML = e.target.getAttribute('tool-type');
+  });
+});
 setHotActions(grid);
 setGridPanning(grid);
 setHistoryControls(grid);
