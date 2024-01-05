@@ -1,71 +1,61 @@
-import {Cell} from'./grid'
+import { Cell } from "./cell";
 export class HistoryGrid {
   first() {
-    return this.history.slice(0,1)[0]
+    return this.history.slice(0, 1)[0];
   }
   last() {
-    return this.history.slice(-1)[0]
+    return this.history.slice(-1)[0];
   }
 
   nth(n) {
-    return this.history.slice(n,n+1)[0];  
+    return this.history.slice(n, n + 1)[0];
   }
-  currentGrid(){
-    // return this;
+  currentGrid() {
     const currentGrid = this.nth(this.currentPointer);
-    // console.log('currentGrid: ', currentGrid)
-    // console.log('currentGrid this: ', this)
-    // console.log('currentGrid this.currentPointer: ', this.currentPointer)
-    // console.log('currentGrid this.history: ', this.history)
-    // console.log('currentGrid this.history.slice: ', this.history.slice(this.currentPointer,1)[0])
-    //Object.assign({},this.nth(this.currentPointer));
     return currentGrid;
-    // return new HistoryGrid(currentGrid,this.history,this.currentPointer);
-  } 
+  }
   next() {
-    if(this.currentPointer>=this.history.length-1) {
-        this.currentPointer = this.history.length-1;
-        return this.last();
-    }else {
-        this.currentPointer++;
-        return this.nth(this.currentPointer);
+    if (this.currentPointer >= this.history.length - 1) {
+      this.currentPointer = this.history.length - 1;
+      return this.last();
+    } else {
+      this.currentPointer++;
+      return this.nth(this.currentPointer);
     }
   }
   prev() {
-    if(this.currentPointer<=0) {
-        this.currentPointer = 0;
-        return this.first();
-    }else {
-        this.currentPointer--;
-        return this.nth(this.currentPointer);
+    if (this.currentPointer <= 0) {
+      this.currentPointer = 0;
+      return this.first();
+    } else {
+      this.currentPointer--;
+      return this.nth(this.currentPointer);
     }
   }
   diffNext() {}
   diffPrev() {}
 
-  clone(grid){
-   const res = [];
-   for(let i=0; i<grid.length; i++) {
-    if(grid[i])
-      res[i] = grid[i].map(e=>e.clone());
-   }
-   return res;
+  clone(grid) {
+    const res = [];
+    for (let i = 0; i < grid.length; i++) {
+      if (grid[i]) res[i] = grid[i].map((e) => e.clone());
+    }
+    return res;
   }
   pushToHistory() {
     this.history.push(this.clone(this.grid));
-    this.currentPointer = this.history.length-1;
-    console.log('push to history this:',this);
-    console.log('push to history this.grid:',JSON.stringify(this.grid));
+    this.currentPointer = this.history.length - 1;
+    console.log("push to history this:", this);
   }
 
-  constructor(_grid=[],_history=[[]],_currentPointer=0) {
+  constructor(_grid = [], _history = [[]], _currentPointer = 0) {
     this.grid = _grid;
     this.history = _history;
     this.currentPointer = _currentPointer;
   }
   clear() {
     this.grid = [];
-    this.history =[[]]
+    this.history = [[]];
     this.currentPointer = 0;
   }
 
@@ -111,6 +101,19 @@ export class HistoryGrid {
     this.pushToHistory();
   }
 
+  getColumn(x) {
+    let res = [];
+    for (let y = 0; y < this.grid.length; y++) {
+      res.push(this.grid[y] ? this.grid[y][x] : undefined);
+    }
+    return res;
+  }
+  getRow(y, x = 0) {
+    if (!this.grid[y]) return [];
+    const res = [];
+    for (let i = x; i < this.grid[y].length; i++) res.push(this.grid[y][i]);
+    return res;
+  }
   // Method to set a value in the grid
   setValue(x, y, value) {
     if (!this.grid[y]) {
@@ -136,5 +139,10 @@ export class HistoryGrid {
   }
   getGrid() {
     return this.currentGrid();
+  }
+  setGrid(newGrid) {
+    this.clear();
+    this.grid = newGrid;
+    this.pushToHistory();
   }
 }
