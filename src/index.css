@@ -33,9 +33,14 @@ body {
   content: attr(data-x)','attr(data-y);
   font-size: 5px;
 }
+.cell:hover {
+  background-color: rgb(186, 230, 253); 
+  filter: brightness(1.2);
+}
 #stats-widget {
   max-width: 400px;
   margin: 20px auto;
+  overflow-y: scroll;
 }
 
 #stats-widget h2 {
