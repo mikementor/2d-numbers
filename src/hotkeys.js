@@ -1,4 +1,15 @@
 export const setHotActions = (grid) => {
+  hotkeys("ctrl+c, command+c", function (event, handler) {
+    event.preventDefault();
+    navigator.clipboard.writeText(grid.getGridJSON());
+  });
+  hotkeys("ctrl+v, command+v", function (event, handler) {
+    event.preventDefault();
+    navigator.clipboard.readText().then((text) => {
+      grid.setGridSnapshot(text);
+      grid.render();
+    });
+  });
   hotkeys("1", function (event, handler) {
     event.preventDefault();
     const currentCell = grid.getCurrentCell();
@@ -17,20 +28,20 @@ export const setHotActions = (grid) => {
     grid.addValue(currentCell.x + 1, currentCell.y + 1, -1);
     grid.render();
   });
-  hotkeys('3', function(event, handler){
-    event.preventDefault()
+  hotkeys("3", function (event, handler) {
+    event.preventDefault();
     const currentCell = grid.getCurrentCell();
-    const gridCellCurrent =  grid.getValue(currentCell.x, currentCell.y);
+    const gridCellCurrent = grid.getValue(currentCell.x, currentCell.y);
     grid.addValue(currentCell.x, currentCell.y, -2);
-    grid.addValue(currentCell.x+1, currentCell.y, 1);
+    grid.addValue(currentCell.x + 1, currentCell.y, 1);
     grid.render();
   });
-  hotkeys('4', function(event, handler){
-    event.preventDefault()
+  hotkeys("4", function (event, handler) {
+    event.preventDefault();
     const currentCell = grid.getCurrentCell();
-    const gridCellCurrent =  grid.getValue(currentCell.x, currentCell.y);
+    const gridCellCurrent = grid.getValue(currentCell.x, currentCell.y);
     grid.addValue(currentCell.x, currentCell.y, 2);
-    grid.addValue(currentCell.x+1, currentCell.y, -1);
+    grid.addValue(currentCell.x + 1, currentCell.y, -1);
     grid.render();
   });
   hotkeys("q", function (event, handler) {

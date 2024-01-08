@@ -1,31 +1,24 @@
-import { Cell } from "../models/cell";
+import * as math from 'mathjs';
 const view_2_3 = (_, grid) => {
-  const raw_grid = grid.getGrid();
-  for (let y = 1; y < raw_grid.length; y++) {
-    if (!raw_grid[y]) continue;
-    for (let x = 0; x < raw_grid[y].length; x++) {
-      grid.addValue(x - y, y, grid.getValue(x, y));
-      //   grid.pushToHistory();
-      grid.setValue(x, y, 0);
-      //   grid.pushToHistory();
-    }
-  }
+    grid.panGridProportionally23x();
 };
+
 const default_view = (_, grid) => {
-  const raw_grid = grid.getGrid();
-  const new_grid = [];
-  console.log("default_view");
-  for (let y = 0; y < raw_grid.length; y++) {
-    new_grid[y] = [];
-    if (!raw_grid[y]) continue;
-    const length = raw_grid[y].length;
-    for (let x = 0; x < length; x++) {
-      const val = grid.getValue(x, y);
-      new_grid[y][x + y] = new Cell(val);
-    }
+    grid.panGridProportionally13x();
+//   const raw_grid = grid.getGrid();
+//   const new_grid = [];
+//   console.log("default_view");
+//   for (let y = 0; y < raw_grid.length; y++) {
+//     new_grid[y] = [];
+//     if (!raw_grid[y]) continue;
+//     const length = raw_grid[y].length;
+//     for (let x = 0; x < length; x++) {
+//       const val = grid.getValue(x, y);
+//       new_grid[y][x + y] = new Cell(val);
+//     }
     
-  }
-  grid.setGrid(new_grid);
+//   }
+//   grid.setGrid(new_grid);
 };
 const add1 = (currentCell, grid) => {
   grid.addValue(currentCell.x, currentCell.y, 1);

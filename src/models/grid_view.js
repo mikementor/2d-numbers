@@ -1,4 +1,3 @@
-import { Grid } from "./grid";
 export class GridView {
     constructor(grid) {
       // if (!(grid instanceof Grid)) {
