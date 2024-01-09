@@ -82,7 +82,7 @@ export class NewGrid {
         this.addValue(offx, offsetY, digit); //?
       }
     });
-    this.pushToHistory();
+    this.pushToHistory(this.getGrid());
   }
 
   getColumn(x) {
