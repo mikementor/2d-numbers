@@ -61,8 +61,8 @@ export class DataGrid {
    setGridSnapshot(text) {
     return this.grid.fromSnapshot(text);
   }
-  pushToHistory() {
-    return this.grid.pushToHistory();
+  pushToHistory(grid) {
+    return this.grid.pushToHistory(grid);
   }
   getColumn(x) {
     return this.grid.getColumn(x);
@@ -150,10 +150,12 @@ export class DataGrid {
     this.offsetY += 1;
   }
   next() {
-    return this.grid.next();
+    this.grid.next();
+    this.render();
   }
   prev() {
-    return this.grid.prev();
+    this.grid.prev();
+    this.render();
   }
   getGridJSON() {
     return this.grid.getGridJSON();
