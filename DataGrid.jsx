@@ -73,6 +73,9 @@ export class DataGrid {
   panGridProportionally13x() {
     this.grid.panGridProportionally13x();
   }
+  doIt(){
+    this.grid.doIt();
+  }
   render() {
     const subgrid = new GridView(this.grid).calculateWindow(
       [this.offsetX, this.offsetY],

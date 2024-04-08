@@ -1,14 +1,36 @@
 import * as math from "mathjs";
-
+globalThis.math = math;
 const DEFAULT_VALUE = 0;
+export class Row {
+  constructor(row = math.sparse([[0]]), _offset = [0, 0],y) {
+    this.offset = _offset; // x,y offset for keeping negative values
+    this.row = row;
+    this.y = y;
+  }
+
+  forEach(func,grid){
+    const _self = this;
+    this.row.forEach(function (value, index, matrix) {
+      const [x]=index;
+     
+      const xOffsetted = x - _self.offset[0];
+      const yOffsetted = _self.y - _self.offset[1];
+      
+      const val = grid.getValue(xOffsetted, _self.y);
+      func( xOffsetted, _self.y,val);
+    })
+
+  }
+  isRow11(){
+    // console.log('isRow11',this.row._values,this.row);
+    return this.row._values.length==2 && this.row._values[0]==1 && this.row._values[1]==-1;
+  }
+}
 export class Matrix {
   constructor(_grid = math.sparse([[0]]), _offset = [0, 0]) {
     this.offset = _offset; // x,y offset for keeping negative values
     this.grid = _grid;
   }
-  //   getGridJSON(){
-  //     return JSON.stringify(this.grid,math.replacer);
-  //   }
   clone() {
     return new Matrix(math.clone(this.grid), this.offset);
   }
@@ -28,13 +50,11 @@ export class Matrix {
     );
   }
 
+
   getRow(y) {
     // todo add out of range checks
     const yOffsetted = y + this.offset[1];
-    const [xSize, _] = this.grid.size();
-    return this.grid.subset(
-      math.index([0, yOffsetted], [yOffsetted, xSize - 1])
-    );
+    return new Row(math.column(this.grid,yOffsetted),this.offset,y);
   }
 
   getVal(x, y) {

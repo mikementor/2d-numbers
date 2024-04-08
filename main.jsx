@@ -31,6 +31,12 @@ document.querySelector("#clear-grid").addEventListener("click", (e) => {
   grid.clear();
   grid.render();
 });
+// document.querySelector("#do-it").addEventListener("click", (e) => {
+//   console.log("do-grid");
+//   grid.doIt();
+//   grid.render();
+// });
+
 
 // Function to update the stats widget
 export function onCellClick({ x, y }, value, grid, e) {

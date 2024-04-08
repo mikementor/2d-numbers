@@ -1,4 +1,4 @@
-import * as math from "mathjs";
+
 import { Matrix } from "./matrix";
 export class NewGrid {
   first() {

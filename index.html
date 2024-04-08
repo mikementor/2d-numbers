@@ -10,7 +10,22 @@
     <div id="stats-widget" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 p-4 border rounded mt-4 bg-white shadow-lg">
       <div id="cell-hover-stats"></div>
       <div id="cell-stats"></div>
+
       <h2 class="text-lg font-bold mt-4 mb-2">Mouse tools</h2>
+      <h2 class="text-lg font-bold mb-2">Grid Controls</h2>
+
+      <button type="button" 
+      id="clear-grid"
+      class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+      Clear</button>
+      <button type="button" 
+      
+      tool-type="do-it"
+      class="mouse-tool-select py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+      Do it!</button>
+      <div class="mb-4">
+        <input type="number" id="enter-number" name="clear-row" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Enter number to fill 0 row">
+      </div>
       <div>Current tool:<div class="selected-mouse-tool"></div></div>
       <h2 class="text-lg font-bold mt-4 mb-2">Editing</h2>
       <button  type="button" 
@@ -52,16 +67,7 @@
       move down</button>
 
 
-      <h2 class="text-lg font-bold mb-2">Grid Controls</h2>
-
-      <button type="button" 
-      id="clear-grid"
-      class="py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-      Clear</button>
-
-      <div class="mb-4">
-        <input type="number" id="enter-number" name="clear-row" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Enter number to fill 0 row">
-      </div>
+      
       
       <h2 class="text-lg font-bold mt-4 mb-2">Cell Actions</h2>
       <div id="cell-actions" class="mb-4">
