@@ -22,7 +22,7 @@ export class Row {
 
   }
   isRow11(){
-    // console.log('isRow11',this.row._values,this.row);
+    console.log('isRow11',this.row._values,this.row);
     return this.row._values.length==2 && this.row._values[0]==1 && this.row._values[1]==-1;
   }
 }

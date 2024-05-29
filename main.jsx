@@ -11,6 +11,7 @@ import { mouse_tool } from "./src/features/mouse-tool.js";
 import * as math from 'mathjs';
 import {Matrix} from './src/models/matrix.js';
 import { DataGrid } from "./DataGrid.jsx";
+import RuleConstructorModal from "./src/components/RuleConstructorModal.jsx";
 
 window.math = math;
 window.matrix = ()=> new Matrix();
@@ -18,6 +19,7 @@ window.matrix = ()=> new Matrix();
 ReactDOM.createRoot(document.getElementById("react-root")).render(
   <React.StrictMode>
     <HelpModal />
+    <RuleConstructorModal />
   </React.StrictMode>
 );
 const grid = new DataGrid();

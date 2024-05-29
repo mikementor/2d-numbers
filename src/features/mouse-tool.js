@@ -38,16 +38,42 @@ const move_down = (currentCell, grid, amount = 1) => {
   // grid.addValue(currentCell.x, currentCell.y + 1, -amount);
 };
 const move_diag_right = (currentCell, grid, amount = 1) => {
-  const val = grid.getValue(currentCell.x, currentCell.y);
+  // const val = grid.getValue(currentCell.x, currentCell.y);
   grid.addValue(currentCell.x, currentCell.y, -amount);
   grid.addValue(currentCell.x - 1, currentCell.y, -amount);
   grid.addValue(currentCell.x - 1, currentCell.y - 1, amount);
+};
+const move_diag_right_till_zero = (currentCell, grid, amount = 1) => {
+  let cell = currentCell;
+  while(cell.y>0){
+    move_diag_right(cell, grid,amount);
+    cell = {x:cell.x-1, y:cell.y-1};
+  }
+};
+const move_diag_right_till_zero_inverse = (currentCell, grid, amount = 1) => {
+  let cell = currentCell;
+  while(cell.y>0){
+    move_diag_right_inverse(cell, grid,amount);
+    cell = {x:cell.x-1, y:cell.y-1};
+  }
 };
 const move_diag_right_inverse = (currentCell, grid, amount = 1) => {
   const val = grid.getValue(currentCell.x, currentCell.y);
   grid.addValue(currentCell.x, currentCell.y, amount);
   grid.addValue(currentCell.x - 1, currentCell.y, amount);
   grid.addValue(currentCell.x - 1, currentCell.y - 1, -amount);
+};
+const dbl_move_diag_right = (currentCell, grid, amount = 1) => {
+  const val = grid.getValue(currentCell.x, currentCell.y);
+  grid.addValue(currentCell.x, currentCell.y, -amount);
+  grid.addValue(currentCell.x - 2, currentCell.y, amount);
+  grid.addValue(currentCell.x - 2, currentCell.y - 1, amount);
+};
+const dbl_move_diag_right_inverse = (currentCell, grid, amount = 1) => {
+  const val = grid.getValue(currentCell.x, currentCell.y);
+  grid.addValue(currentCell.x, currentCell.y, amount);
+  grid.addValue(currentCell.x - 2, currentCell.y, -amount);
+  grid.addValue(currentCell.x - 2, currentCell.y - 1, -amount);
 };
 const up_row = (currentCell, grid, startX = -Infinity) => {
   // console.log('up_row', currentCell)
@@ -129,7 +155,7 @@ const do_it=(_cell, grid)=>{
       cell = make_row_start_from_minus_1({ x: 0, y:y+1}, grid);
       normalize_row( {x: 0, y:y+1 }, grid);
     }
-    while(!grid.getRow(++y).isRow11() && y<30);
+    while(!grid.getRow(++y).isRow11());
     // up_row({ x: cell.x, y:cell.y+2 }, grid,cell.x+1);
     // normalize_row( {x: cell.x, y:cell.y+2 }, grid);
     // console.log('isRow11: ',grid.getRow(cell.y+1).isRow11());
@@ -199,6 +225,14 @@ const map = {
   "move-diag-right": {
     positive: move_diag_right,
     inverse: move_diag_right_inverse,
+  },
+  "dbl-move-diag-right": {
+    positive: dbl_move_diag_right,
+    inverse: dbl_move_diag_right_inverse,
+  },
+  "move-diag-right-till_zero":{
+    positive: move_diag_right_till_zero,
+    inverse: move_diag_right_till_zero_inverse,
   },
   "do-it":{
     positive: do_it,
