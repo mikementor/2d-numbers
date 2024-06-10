@@ -15,6 +15,7 @@ export const Stats = () => {
 
 
 export const MouseTools = ({changeType}) => {
+  const types = mouse_tool.types
   const onModifierChange = (e)=>{
     mouse_tool.switch_type(e.target.value)
   }
@@ -24,9 +25,7 @@ export const MouseTools = ({changeType}) => {
       <div>
         <div>modifier</div>
         <select size="3"  onChange={onModifierChange}>
-          <option value="default" label="default" selected/>
-          <option value="till-axis" label="till-axis"/>
-          <option value="till-non-zero" label="till-non-zero"/>
+          {types.map(type=><option value={type} label={type} key={type}/>)}
         </select>
       </div>
       {tools.map((tool) => (

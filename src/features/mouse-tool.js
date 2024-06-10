@@ -22,7 +22,7 @@ const rules = [
     ]
   },
   {
-    name:'just-dowm',
+    name:'just-down',
     rule:[
       ['-3'],
       ['+1'],
@@ -34,7 +34,7 @@ const parse = (rule = rule,opts=op)=>{
   const {inverse_signs,center} = {...op,...opts};
   
   return (cell,grid,opts)=>{
-    const coeff = mouse_tool.type=='default'?1:grid.getValue(cell.x,cell.y)
+    const coeff = mouse_tool.type=='till-zero'?grid.getValue(cell.x,cell.y):1
        
     for(let y=0;y<rule.rule.length;y++){
       let row = rule.rule[y];
@@ -45,6 +45,7 @@ const parse = (rule = rule,opts=op)=>{
     }
   }
 }
+window.parse = parse
 const new_tools = Object
             .fromEntries(
               rules
@@ -323,6 +324,7 @@ const map = {
 export const mouse_tool = {
   tool: "add-1",
   type:'default',// till-axis till-non-zero
+  types:['default','till-zero'],
   current_tool() {
     return this.tool;
   },
