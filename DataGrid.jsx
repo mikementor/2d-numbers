@@ -1,7 +1,24 @@
 import { NewGrid as NewGrid } from "./src/models/new-grid.js";
 import { GridView } from "./src/models/grid_view.js";
-import { onCellClick, updateHoverStats } from "./main.jsx";
-
+import { mouse_tool } from "./src/features/mouse-tool.js";
+// Function to update the stats widget
+export function onCellClick({ x, y }, value, grid, e) {
+  mouse_tool.on_click({ x, y }, grid, e);
+  grid.render();
+}
+export function updateHoverStats({ x, y }, value, grid) {
+  const cellStats = document.getElementById("cell-hover-stats");
+  if(cellStats==null){
+    console.warn('to do: update hover stats')
+    return;
+  }
+  grid.setCurrentCell({ x, y, value });
+  cellStats.innerHTML = `
+    <p><strong>Cell:</strong> (${x}, ${y})</p>
+    <p><strong>Value:</strong> ${value}</p>
+    <p><strong>Value:</strong> ${value * 2 ** x * 3 ** y}</p>
+  `;
+}
 export class DataGrid {
   constructor() {
     // this.grid = new HistoryGrid();
@@ -106,7 +123,7 @@ export class DataGrid {
         cellElement.setAttribute("data-x", x);
         cellElement.setAttribute("data-y", y);
         cellElement.onclick = (e) => onCellClick({ x, y }, cellValue, grid, e);
-        cellElement.onmouseover = () => updateHoverStats({ x, y }, cellValue);
+        cellElement.onmouseover = () => updateHoverStats({ x, y }, cellValue, grid);
         if (cellValue != 0) cellElement.textContent = cellValue;
         else cellElement.textContent = "";
         if (cellValue > 0) {
@@ -140,17 +157,17 @@ export class DataGrid {
     });
   }
 
-  moveGridLeft() {
-    this.offsetX -= 1;
+  moveGridLeft(amount=1) {
+    this.offsetX -= amount;
   }
-  moveGridRight() {
-    this.offsetX += 1;
+  moveGridRight(amount=1) {
+    this.offsetX += amount;
   }
-  moveGridUp() {
-    this.offsetY -= 1;
+  moveGridUp(amount=1) {
+    this.offsetY -= amount;
   }
-  moveGridDown() {
-    this.offsetY += 1;
+  moveGridDown(amount=1) {
+    this.offsetY += amount;
   }
   next() {
     this.grid.next();

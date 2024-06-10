@@ -12,70 +12,51 @@ import * as math from 'mathjs';
 import {Matrix} from './src/models/matrix.js';
 import { DataGrid } from "./DataGrid.jsx";
 import RuleConstructorModal from "./src/components/RuleConstructorModal.jsx";
+import { LeftPanel } from "./src/components/LeftPanel.jsx";
 
-window.math = math;
-window.matrix = ()=> new Matrix();
-// react migration
-ReactDOM.createRoot(document.getElementById("react-root")).render(
-  <React.StrictMode>
-    <HelpModal />
-    <RuleConstructorModal />
-  </React.StrictMode>
-);
-const grid = new DataGrid();
-grid.render();
-document.querySelector("#enter-number").addEventListener("change", (e) => {
+// window.math = math;
+// window.matrix = ()=> new Matrix();
+const doItGrid = () => {
+  console.log("do-it-grid");
+  grid.doIt();
+  grid.render();
+};
+const onInputChange= (e) => {
   grid.clear();
   grid.appendNumberAsBinary(parseInt(e.target.value));
-});
-document.querySelector("#clear-grid").addEventListener("click", (e) => {
+  doItGrid()
+};
+const clearGrid = (e) => {
   console.log("clear-grid");
   grid.clear();
   grid.render();
-});
-// document.querySelector("#do-it").addEventListener("click", (e) => {
-//   console.log("do-grid");
-//   grid.doIt();
-//   grid.render();
-// });
-
-
-// Function to update the stats widget
-export function onCellClick({ x, y }, value, grid, e) {
-  const cellStats = document.getElementById("cell-stats");
-  // const value = grid.getValue(x, y);
-  // const rowValue = grid.computeRowValue(x); // You'll need to implement this method in Grid class
-
-  cellStats.innerHTML = `
-    <p><strong>Cell:</strong> (${x}, ${y})</p>
-    <p><strong>Value:</strong> ${value}</p>
-    <p><strong>Value:</strong> ${value * 2 ** x * 3 ** y}</p>
-  `;
-  const currentCell = grid.getCurrentCell();
-  const gridCellCurrent = grid.getValue(currentCell.x, currentCell.y);
-
-  // grid.addValue(currentCell.x, currentCell.y, 1);
-  mouse_tool.on_click(currentCell, grid, e);
-  grid.render();
-}
-export function updateHoverStats({ x, y }, value) {
-  const cellStats = document.getElementById("cell-hover-stats");
-  grid.setCurrentCell({ x, y, value });
-  cellStats.innerHTML = `
-    <p><strong>Cell:</strong> (${x}, ${y})</p>
-    <p><strong>Value:</strong> ${value}</p>
-    <p><strong>Value:</strong> ${value * 2 ** x * 3 ** y}</p>
-  `;
+};
+const changeType = (type)=>{
+  mouse_tool.switch_tool(type);
 }
 
-const mouse_tools_selects = document.querySelectorAll(".mouse-tool-select");
-const selected_tool = document.querySelector(".selected-mouse-tool");
-mouse_tools_selects.forEach((select) => {
-  select.addEventListener("click", function handleClick(e) {
-    mouse_tool.switch_tool(e.target.getAttribute("tool-type"));
-    selected_tool.innerHTML = e.target.getAttribute("tool-type");
-  });
-});
+const grid = new DataGrid();
+grid.render();
+onInputChange({target:{value:'13'}})
+doItGrid();
+changeType('test');
+
+
+
+// react migration
+ReactDOM.createRoot(document.getElementById("react-root")).render(
+  <React.StrictMode>
+    <LeftPanel  onInputChange={onInputChange} clearGrid={clearGrid} doItGrid={doItGrid} changeType={changeType}/>
+    <HelpModal />
+    {/* <RuleConstructorModal /> */}
+  </React.StrictMode>
+);
+
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+
 setHotActions(grid);
 setGridPanning(grid);
 setHistoryControls(grid);
+
+});

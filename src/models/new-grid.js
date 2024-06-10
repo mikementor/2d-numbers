@@ -1,4 +1,5 @@
 
+import { do_it } from "../features/mouse-tool";
 import { Matrix } from "./matrix";
 export class NewGrid {
   first() {
@@ -131,5 +132,9 @@ export class NewGrid {
   }
   getGridJSON(){
     return this.getGrid().stringify();
+  }
+  doIt(){
+     do_it(undefined,this);
+
   }
 }

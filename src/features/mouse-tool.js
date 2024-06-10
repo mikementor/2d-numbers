@@ -1,27 +1,104 @@
 
-const view_2_3 = (_, grid) => {
-    grid.panGridProportionally23x();
-};
 
-const default_view = (_, grid) => {
+
+const rules = [
+  
+  {
+    name:'shift-right',
+    rule:[
+      ['-1','+2']
+    ]
+  },{
+    name:'shift-right-dom',
+    rule:[
+      ['-1','0','+1'],
+      ['0','0','+1'],
+    ]
+  },{
+    name:'next-right-dom',
+    rule:[
+      ['-1','-1'],
+      ['0','+1'],
+    ]
+  },
+  {
+    name:'just-dowm',
+    rule:[
+      ['-3'],
+      ['+1'],
+    ]
+  }
+]
+const op = {inverse_signs:false,center:{x:0,y:0}};
+const parse = (rule = rule,opts=op)=>{
+  const {inverse_signs,center} = {...op,...opts};
+  
+  return (cell,grid,opts)=>{
+    const coeff = mouse_tool.type=='default'?1:grid.getValue(cell.x,cell.y)
+       
+    for(let y=0;y<rule.rule.length;y++){
+      let row = rule.rule[y];
+      
+      for(let x=0;x<row.length;x++){
+         grid.addValue(cell.x-x-center.x, cell.y-y-center.y, (inverse_signs?-1:1)*parseInt(row[x])*coeff);
+      }  
+    }
+  }
+}
+const new_tools = Object
+            .fromEntries(
+              rules
+            .map(e=>([e.name,{positive:parse(e),inverse:parse(e,{inverse_signs:true})}]))
+            );
+export const tools = Object.keys(new_tools).map(e=>({type:e,text:e}))
+
+export const view_2_3 = (_, grid) => {
+  grid.panGridProportionally23x();
+};
+export const default_view = (_, grid) => {
     grid.panGridProportionally13x();
 };
-const add1 = (currentCell, grid) => {
+export const add1 = (currentCell, grid) => {
   grid.addValue(currentCell.x, currentCell.y, 1);
 };
-const minus1 = (currentCell, grid) => {
+export const minus1 = (currentCell, grid) => {
   grid.addValue(currentCell.x, currentCell.y, -1);
 };
-const move_left = (currentCell, grid, amount = 1) => {
+export const move_left = (currentCell, grid, amount = 1) => {
   grid.addValue(currentCell.x, currentCell.y, -2 * amount);
   grid.addValue(currentCell.x + 1, currentCell.y, +amount);
 };
-const move_right = (currentCell, grid, amount = 1) => {
+const def_opts =  {amount: 1, mouse_type:'default'};
+
+const right_down = (currentCell, grid, opts = def_opts) => {
+  const {amount,mouse_type} = {...def_opts,...opts};
+  const sign = grid.getValue(currentCell.x, currentCell.y)>0?1:-1
+  grid.addValue(currentCell.x, currentCell.y, -1*sign * amount);
+  grid.addValue(currentCell.x-1 , currentCell.y, -1*sign*amount);
+  grid.addValue(currentCell.x-1 , currentCell.y-1, +sign*amount);
+  if(mouse_type=='till-axis' && currentCell.y>1){
+    right_down({x:currentCell.x,y:currentCell.y-1}, grid, {amount, mouse_type})
+  }
+};
+const inverse_right_down = (currentCell, grid, opts = def_opts) => {
+  const {amount,mouse_type} = {...def_opts,...opts};
+  let sign = grid.getValue(currentCell.x, currentCell.y)>0?1:-1
+  grid.addValue(currentCell.x, currentCell.y, sign*1 * amount);
+  grid.addValue(currentCell.x , currentCell.y-1, sign* amount);
+  
+};
+export const move_right = (currentCell, grid,  opts = def_opts) => {
+  const {mouse_type} = {...def_opts,...opts};
+  const amount =  grid.getValue(currentCell.x, currentCell.y);
   grid.addValue(currentCell.x, currentCell.y, -1 * amount);
   grid.addValue(currentCell.x - 1, currentCell.y, +2 * amount);
+  if(mouse_type=='till-axis' && currentCell.x>1){
+    move_right({x:currentCell.x-1,y:currentCell.y}, grid, opts)
+  }
 };
-const move_up = (currentCell, grid, amount = 1) => {
+export  const move_up = (currentCell, grid, opts = def_opts) => {
   console.log('move-up')
+  const {amount,mouse_type} = {...def_opts,...opts};
   // const val = grid.getValue(currentCell.x, currentCell.y);
   grid.addValue(currentCell.x, currentCell.y, -amount);
   grid.addValue(currentCell.x + 1, currentCell.y + 1, +amount);
@@ -144,7 +221,7 @@ const make_row_start_from_minus_1 = (cell, grid) => {
   }
   
 };
-const do_it=(_cell, grid)=>{
+export const do_it=(_cell, grid)=>{
   // alert('hehe')
   // up_row({x:0,y:0},grid)
   let cell ;
@@ -237,13 +314,20 @@ const map = {
   "do-it":{
     positive: do_it,
     inverse: do_nothing
+  },
+  "right-down":{
+    positive: right_down,
+    inverse: inverse_right_down,
   }
 };
 export const mouse_tool = {
   tool: "add-1",
-
+  type:'default',// till-axis till-non-zero
   current_tool() {
     return this.tool;
+  },
+  switch_type(type){
+    this.type = type;
   },
   switch_tool(tool) {
     this.tool = tool;
@@ -252,9 +336,9 @@ export const mouse_tool = {
 
   on_click(cell, grid, event) {
     if (event.shiftKey) {
-      map[this.current_tool()].inverse(cell, grid);
+      new_tools[this.current_tool()].inverse(cell, grid,{mouse_type:this.type});
     } else {
-      map[this.current_tool()].positive(cell, grid);
+      new_tools[this.current_tool()].positive(cell, grid,{mouse_type:this.type});
     }
   },
 };
