@@ -1,6 +1,26 @@
 import * as math from "mathjs";
 globalThis.math = math;
 const DEFAULT_VALUE = 0;
+
+export class Cell{
+  val=0
+  twos=0
+  threes=0
+  constructor(val=0){
+    this.val = val
+  }
+  multiplyBy2(times){
+    this.twos+=times;
+  }
+  multiplyBy3(times){
+    this.threes+=times;
+  }
+  pretty(){
+    if(this.twos == 0 && this.threes == 0)
+      return this.val
+    return `${this.val}(${this.twos};${this.threes})`
+  }
+}
 export class Row {
   constructor(row = math.sparse([[0]]), _offset = [0, 0],y) {
     this.offset = _offset; // x,y offset for keeping negative values
@@ -57,6 +77,10 @@ export class Matrix {
     return new Row(math.column(this.grid,yOffsetted),this.offset,y);
   }
 
+  
+  getPrettyVal(x,y){
+    return this.getVal(x,y)
+  }
   getVal(x, y) {
     const [xSize, ySize] = this.grid.size();
 

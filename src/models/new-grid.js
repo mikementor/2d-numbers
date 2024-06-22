@@ -94,12 +94,14 @@ export class NewGrid {
   }
 
   // Method to set a value in the grid
-  setValue(x, y, value) {
-    this.getGrid().setVal(x,y,value);
+  // setValue(x, y, value) {
+  //   console.log('setValue', x, y, value);
+  //   this.getGrid().setVal(x,y,value);
 
-    this.pushToHistory(this.getGrid().clone());
-  }
+  //   this.pushToHistory(this.getGrid().clone());
+  // }
   addValue(x, y, value) {
+    // console.log('addValue', x, y, value);
     this.getGrid().addVal(x,y,value);
 
     this.pushToHistory(this.getGrid().clone());
@@ -108,8 +110,12 @@ export class NewGrid {
   // Method to get a value from the grid
   getValue(x, y) {
     return this.getGrid().getVal(x,y);
-
   }
+
+  getPrettyValue(x, y) {
+    return this.getGrid().getPrettyVal(x,y);
+  }
+
   getGrid() {
     return this.currentGrid();
   }

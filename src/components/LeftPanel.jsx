@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { mouse_tool } from "../features/mouse-tool";
 import { tools } from "../features/mouse-tool";
 export const Stats = () => {
@@ -13,11 +13,26 @@ export const Stats = () => {
   );
 };
 
-
-export const MouseTools = ({changeType}) => {
+export const CodeArea = ({onClick})=>{
+  const [text,setText]=useState('');
+  const onCodeClick = ()=>{
+      onClick(text);
+  }
+  const onChange = (e)=>{
+    setText(e.target.value)
+  }
+  return (<div>
+    <textarea size={20} onChange={onChange} className="border-solid border-2 border-sky-500"/>
+    <button onClick={onCodeClick}>Do</button>
+  </div>)
+}
+export const MouseTools = ({changeType,grid}) => {
   const types = mouse_tool.types
   const onModifierChange = (e)=>{
     mouse_tool.switch_type(e.target.value)
+  }
+  const onCodeClick=(text)=>{
+    mouse_tool.execute(text,grid)
   }
   return (
     <div>
@@ -39,6 +54,7 @@ export const MouseTools = ({changeType}) => {
           {tool.text}
         </button>
       ))}
+      <CodeArea onClick={onCodeClick}/>
     </div>
   );
 };
@@ -99,7 +115,7 @@ export const Transformations = () => {
   );
 };
 
-export const LeftPanel = ({ onInputChange, clearGrid, doItGrid,changeType }) => {
+export const LeftPanel = ({ grid,onInputChange, clearGrid, doItGrid,changeType }) => {
   return (
     <div class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 p-4 border rounded mt-4 bg-white shadow-lg">
       <button
@@ -130,7 +146,7 @@ export const LeftPanel = ({ onInputChange, clearGrid, doItGrid,changeType }) => 
           onChange={onInputChange}
         />
       </div>
-      <MouseTools changeType={changeType}/>
+      <MouseTools changeType={changeType} grid={grid}/>
     </div>
   );
 };

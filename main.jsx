@@ -1,5 +1,4 @@
 import "./src/index.css";
-import { HistoryGrid } from "./src/models/grid-history.js";
 import hotkeys from "hotkeys-js";
 import { setHotActions } from "./src/hotkeys.js";
 import { setGridPanning } from "./src/interactions/grid-pan.js";
@@ -46,7 +45,7 @@ changeType('test');
 // react migration
 ReactDOM.createRoot(document.getElementById("react-root")).render(
   <React.StrictMode>
-    <LeftPanel  onInputChange={onInputChange} clearGrid={clearGrid} doItGrid={doItGrid} changeType={changeType}/>
+    <LeftPanel  grid={grid} onInputChange={onInputChange} clearGrid={clearGrid} doItGrid={doItGrid} changeType={changeType}/>
     <HelpModal />
     {/* <RuleConstructorModal /> */}
   </React.StrictMode>

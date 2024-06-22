@@ -4,53 +4,123 @@
 const rules = [
   
   {
-    name:'shift-right',
+    name:'→',
     rule:[
       ['-1','+2']
     ]
   },{
-    name:'shift-right-dom',
+    name:'→→↓',
     rule:[
       ['-1','0','+1'],
       ['0','0','+1'],
     ]
   },{
-    name:'next-right-dom',
+    name:'↘',
     rule:[
       ['-1','-1'],
       ['0','+1'],
     ]
   },
   {
-    name:'just-down',
+    name:'3↘',
+    opts:{
+      center:{x:-1,y:-1}
+    },
+    rule:[
+      ['+3','0'],
+      ['0','-2'],
+    ]
+  },
+  {
+    name:'3↘2',
+    opts:{
+      center:{x:-1,y:-1}
+    },
+    rule:[
+      ['+3*((x)/2)','0'],
+      ['0','-2*((x)/2)'],
+    ]
+  },
+  {
+    name:'3↘-1',
+    opts:{
+      center:{x:-1,y:-1}
+    },
+    rule:[
+      ['+3*((x+1)/2)','0'],
+      ['0','-2*((x)/2)-1'],
+    ]
+  },
+  {
+    name:'↓',
     rule:[
       ['-3'],
       ['+1'],
+    ]
+  },
+  {
+    name:'↖↗',
+    rule:[
+      ['+1','+1'],
+      ['0','-1'],
+    ]
+  },
+  {
+    name:'3⬆',
+    opts:{
+      center:{x:0,y:-1}
+    },
+    rule:[
+      ['+3*(x)'],
+      ['-(x)'],
+    ]
+  },
+   {
+    name:'3⬆',
+    opts:{
+      center:{x:0,y:-1}
+    },
+    rule:[
+      ['+3*(x)'],
+      ['-(x)'],
+    ]
+  },
+  {
+    name:'+1',
+    rule:[
+      ['+1'],
+    ]
+  },
+  {
+    name:'+x',
+    rule:[
+      ['+(x)'],
     ]
   }
 ]
 const op = {inverse_signs:false,center:{x:0,y:0}};
 const parse = (rule = rule,opts=op)=>{
-  const {inverse_signs,center} = {...op,...opts};
+  const {inverse_signs,center} = {...op,...opts,...rule.opts};
   
   return (cell,grid,opts)=>{
     const coeff = mouse_tool.type=='till-zero'?grid.getValue(cell.x,cell.y):1
-       
+    const x = grid.getValue(cell.x,cell.y)
+    const parse_rule = (str)=>eval(str.replace('x',x))   
     for(let y=0;y<rule.rule.length;y++){
       let row = rule.rule[y];
       
       for(let x=0;x<row.length;x++){
-         grid.addValue(cell.x-x-center.x, cell.y-y-center.y, (inverse_signs?-1:1)*parseInt(row[x])*coeff);
+         grid.addValue(cell.x-x-center.x, cell.y-y-center.y, (inverse_signs?-1:1)*parse_rule(row[x])*coeff);
       }  
     }
   }
 }
-window.parse = parse
 const new_tools = Object
             .fromEntries(
               rules
             .map(e=>([e.name,{positive:parse(e),inverse:parse(e,{inverse_signs:true})}]))
             );
+window.tools = new_tools;
 export const tools = Object.keys(new_tools).map(e=>({type:e,text:e}))
 
 export const view_2_3 = (_, grid) => {
@@ -343,4 +413,7 @@ export const mouse_tool = {
       new_tools[this.current_tool()].positive(cell, grid,{mouse_type:this.type});
     }
   },
+  execute(text,grid){
+    alert('execute'+ text);
+  }
 };

@@ -39,6 +39,9 @@ export class DataGrid {
   getValue(x, y) {
     return this.grid.getValue(x, y);
   }
+  getPrettyValue(x, y) {
+    return this.grid.getValue(x, y);
+  }
   setValue(x, y, value) {
     this.grid.setValue(x, y, value);
   }

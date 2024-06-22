@@ -14,7 +14,7 @@ export class GridView {
         let row = [];
         for (let x = 0; x < size; x++) {
           // Use the Grid's getValue method to check if the current x and y are within the bounds
-          const value = this.grid.getValue(xStart + x, yStart + y);
+          const value = this.grid.getPrettyValue(xStart + x, yStart + y);
           row.push(value);
         }
         subgrid.push(row);
