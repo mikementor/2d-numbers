@@ -21,5 +21,15 @@ export const setGridPanning = (grid)=>{
       event.preventDefault()
       grid.moveGridRight();
       grid.render();
+    }); 
+    hotkeys('-',{keydown:true}, function(event, handler){
+      event.preventDefault()
+      grid.lessSize();
+      grid.render();
+    });
+    hotkeys('=',{keydown:true}, function(event, handler){
+      event.preventDefault()
+      grid.moreSize();
+      grid.render();
     });
   };

@@ -20,10 +20,18 @@ const doItGrid = () => {
   grid.doIt();
   grid.render();
 };
+const shortGrid = () => {
+  console.log("do-it-grid");
+  grid.shortGrid();
+  grid.render();
+};
 const onInputChange= (e) => {
   grid.clear();
   grid.appendNumberAsBinary(parseInt(e.target.value));
-  doItGrid()
+  doItGrid();
+  //shortGrid();
+  grid.fitView();
+
 };
 const clearGrid = (e) => {
   console.log("clear-grid");
@@ -34,11 +42,10 @@ const changeType = (type)=>{
   mouse_tool.switch_tool(type);
 }
 
-const grid = new DataGrid();
+window.grid = new DataGrid();
 grid.render();
 onInputChange({target:{value:'13'}})
-doItGrid();
-changeType('test');
+
 
 
 

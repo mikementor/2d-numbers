@@ -1,5 +1,5 @@
 
-import { do_it } from "../features/mouse-tool";
+import { do_it,short_grid } from "../features/mouse-tool";
 import { Matrix } from "./matrix";
 export class NewGrid {
   first() {
@@ -42,7 +42,7 @@ export class NewGrid {
     if(!grid) throw new Error('somebody pushed undefined to history!')
     this.history.push(grid);
     this.currentPointer = this.history.length - 1;
-    console.log("push to history this:", this);
+    // console.log("push to history this:", this);
   }
 
   constructor(_grid = new Matrix(), _history = [_grid], _currentPointer = 0) {
@@ -93,13 +93,6 @@ export class NewGrid {
     return this.getGrid().getRow(y);
   }
 
-  // Method to set a value in the grid
-  // setValue(x, y, value) {
-  //   console.log('setValue', x, y, value);
-  //   this.getGrid().setVal(x,y,value);
-
-  //   this.pushToHistory(this.getGrid().clone());
-  // }
   addValue(x, y, value) {
     // console.log('addValue', x, y, value);
     this.getGrid().addVal(x,y,value);
@@ -141,6 +134,14 @@ export class NewGrid {
   }
   doIt(){
      do_it(undefined,this);
-
+  }
+  shortGrid(){
+    short_grid(this);
+  }
+  forEachColumn(x){
+    return this.getGrid().forEachColumn(x);
+  }
+  getFurthestPoints(){
+    return this.getGrid().getFurthestPoints();
   }
 }

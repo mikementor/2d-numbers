@@ -46,9 +46,30 @@ export class Row {
     return this.row._values.length==2 && this.row._values[0]==1 && this.row._values[1]==-1;
   }
 }
+export class Column {
+  constructor(column = math.sparse([[0]]), _offset = [0, 0],x,grid) {
+    this.offset = _offset; // x,y offset for keeping negative values
+    this.column = column;
+    this.x = x;
+    this.grid = grid;
+  }
+
+  forEach(func){
+    const _self = this;
+    this.column.forEach(function (value, index, matrix) {
+      const [,y]=index;
+      const xOffsetted = _self.x - _self.offset[0];
+      const yOffsetted = y - _self.offset[1];
+      const val = _self.grid.getVal(xOffsetted, y);
+ 
+      func( xOffsetted, yOffsetted,val);
+    })
+
+  }
+}
 export class Matrix {
   constructor(_grid = math.sparse([[0]]), _offset = [0, 0]) {
-    this.offset = _offset; // x,y offset for keeping negative values
+    this.offset = _offset; // x,y offset for keeping negative indices
     this.grid = _grid;
   }
   clone() {
@@ -65,11 +86,21 @@ export class Matrix {
     // todo add out of range checks
     const xOffsetted = x + this.offset[0];
     const [_, ySize] = this.grid.size();
-    return this.grid.subset(
-      math.index([xOffsetted, 0], [xOffsetted, ySize - 1])
-    );
+    return new Column(math.row(this.grid,xOffsetted),this.offset,x,this);
+    // return this.grid.subset(
+    //   math.index([xOffsetted, 0], [xOffsetted, ySize - 1])
+    // );
   }
+  forEachColumn(func) {
+    const [xSize] = this.grid.size();
 
+
+    for(let x = 0;x<xSize;x++){
+      const col  = this.getColumn(x-this.offset[0]);
+      func(col,x);
+    }
+
+  }
 
   getRow(y) {
     // todo add out of range checks
@@ -77,7 +108,7 @@ export class Matrix {
     return new Row(math.column(this.grid,yOffsetted),this.offset,y);
   }
 
-  
+
   getPrettyVal(x,y){
     return this.getVal(x,y)
   }
@@ -99,6 +130,18 @@ export class Matrix {
     return this.grid.get([xOffsetted, yOffsetted]);
   }
 
+  getFurthestPoints(){
+    const [xSize, ySize] = this.grid.size();
+
+    const xOffsetted = xSize+this.offset[0];
+    const yOffsetted = ySize+this.offset[1];
+
+    // const north_east = {x:xOffsetted,y:ySize}// ↗
+    // const north_west = {x:xSize,y:ySize}// ↖
+    // const south_east = {x:xOffsetted,y:yOffsetted}// ↘
+    // const south_west = {x:xSize,y:ySize}// ↙
+    return {xOffsetted, yOffsetted}
+  }
   setVal(x, y, val) {
     const [xSize, ySize] = this.grid.size();
 

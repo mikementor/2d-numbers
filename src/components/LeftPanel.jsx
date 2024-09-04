@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { mouse_tool } from "../features/mouse-tool";
 import { tools } from "../features/mouse-tool";
+import { to_svg } from "../features/to-svg";
 export const Stats = () => {
   return (
     <div
@@ -49,7 +50,7 @@ export const MouseTools = ({changeType,grid}) => {
           type="button"
           onClick={()=>changeType(tool.type)}
           tool-type={tool.type}
-          class="mouse-tool-select py-2.5 px-5 me-2 mb-2 text-sm font-small text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+          className="mouse-tool-select py-2.5 px-5 me-2 mb-2 text-sm font-small text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
         >
           {tool.text}
         </button>
@@ -125,6 +126,13 @@ export const LeftPanel = ({ grid,onInputChange, clearGrid, doItGrid,changeType }
         onClick={clearGrid}
       >
         Clear
+      </button>
+      <button
+        type="button"
+        onClick={to_svg}
+        class="mouse-tool-select py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-full border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+      >
+       to svg
       </button>
       <button
         type="button"

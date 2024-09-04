@@ -45,7 +45,7 @@ export class HistoryGrid {
   pushToHistory() {
     this.history.push(this.clone(this.grid));
     this.currentPointer = this.history.length - 1;
-    console.log("push to history this:", this);
+    // console.log("push to history this:", this);
   }
 
   constructor(_grid = [], _history = [[]], _currentPointer = 0) {

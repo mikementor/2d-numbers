@@ -8,8 +8,8 @@ export function onCellClick({ x, y }, value, grid, e) {
 }
 export function updateHoverStats({ x, y }, value, grid) {
   const cellStats = document.getElementById("cell-hover-stats");
-  if(cellStats==null){
-    console.warn('to do: update hover stats')
+  if (cellStats == null) {
+    console.warn("to do: update hover stats");
     return;
   }
   grid.setCurrentCell({ x, y, value });
@@ -23,12 +23,19 @@ export class DataGrid {
   constructor() {
     // this.grid = new HistoryGrid();
     this.grid = new NewGrid();
-    this.size = 30;
-    this.offsetX = -5;
-    this.offsetY = -5;
+    this.size = 15;
+    this.offsetX = -1;
+    this.offsetY = -1;
     this.cellSize = 20;
     this.dom = document.getElementById("default-grid-view");
     this.currentCell = null;
+  }
+  moreSize(){
+    this.size++;
+  }
+  lessSize(){
+    if(this.size > 10)
+    this.size--;
   }
   setCurrentCell(cell) {
     this.currentCell = cell;
@@ -77,8 +84,8 @@ export class DataGrid {
   }
   setGrid(newGrid) {
     return this.grid.setGrid(newGrid);
-  } 
-   setGridSnapshot(text) {
+  }
+  setGridSnapshot(text) {
     return this.grid.fromSnapshot(text);
   }
   pushToHistory(grid) {
@@ -93,8 +100,26 @@ export class DataGrid {
   panGridProportionally13x() {
     this.grid.panGridProportionally13x();
   }
-  doIt(){
+  doIt() {
     this.grid.doIt();
+  }
+  shortGrid(){
+    this.grid.shortGrid();
+  }
+  fitView() {
+    const {xOffsetted,yOffsetted} = this.grid.getFurthestPoints();
+    // const max  = Math.max(this.size,xOffsetted,yOffsetted)
+    const max  = Math.max(xOffsetted,yOffsetted)+1
+    this.size = max;
+    // const max = Math.max(this.size, xOffsetted);
+    const subgrid = new GridView(this.grid).calculateWindow(
+      [this.offsetX, this.offsetY],
+      this.size,
+      "top-left"
+    );
+    this.renderGrid(subgrid, this.cellSize, this.dom, this);
+    // console.log(this.grid.getFurthestPoints())
+    // console.log( [this.offsetX, this.offsetY])
   }
   render() {
     const subgrid = new GridView(this.grid).calculateWindow(
@@ -106,6 +131,10 @@ export class DataGrid {
   }
   renderGrid(windowView, cellSize, gridViewElement, grid) {
     gridViewElement.innerHTML = ""; // Clear previous grid
+    let zoom = 400/(cellSize*windowView.length);
+    
+    console.log('zoom',zoom);
+    gridViewElement.style.zoom=zoom;
     const column_actions = document.createElement("div");
     column_actions.className = "column-actions-selection";
     column_actions.classList.add("column-actions-selection");
@@ -126,7 +155,8 @@ export class DataGrid {
         cellElement.setAttribute("data-x", x);
         cellElement.setAttribute("data-y", y);
         cellElement.onclick = (e) => onCellClick({ x, y }, cellValue, grid, e);
-        cellElement.onmouseover = () => updateHoverStats({ x, y }, cellValue, grid);
+        cellElement.onmouseover = () =>
+          updateHoverStats({ x, y }, cellValue, grid);
         if (cellValue != 0) cellElement.textContent = cellValue;
         else cellElement.textContent = "";
         if (cellValue > 0) {
@@ -160,16 +190,16 @@ export class DataGrid {
     });
   }
 
-  moveGridLeft(amount=1) {
+  moveGridLeft(amount = 1) {
     this.offsetX -= amount;
   }
-  moveGridRight(amount=1) {
+  moveGridRight(amount = 1) {
     this.offsetX += amount;
   }
-  moveGridUp(amount=1) {
+  moveGridUp(amount = 1) {
     this.offsetY -= amount;
   }
-  moveGridDown(amount=1) {
+  moveGridDown(amount = 1) {
     this.offsetY += amount;
   }
   next() {
