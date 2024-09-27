@@ -1,4 +1,5 @@
 export const setHotActions = (grid) => {
+  
   hotkeys("ctrl+c, command+c", function (event, handler) {
     event.preventDefault();
     navigator.clipboard.writeText(grid.getGridJSON());

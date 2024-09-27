@@ -1,4 +1,5 @@
 export const setGridPanning = (grid)=>{
+  
     hotkeys('up',{keydown:true}, function(event, handler){
       event.preventDefault()
       grid.moveGridUp();
