@@ -1,12 +1,12 @@
-import { NewGrid as NewGrid } from "./src/models/new-grid.js";
-import { GridView } from "./src/models/grid_view.js";
-import { mouse_tool } from "./src/features/mouse-tool.js";
+import { NewGrid as NewGrid } from "../models/new-grid.js";
+import { GridView } from "../models/grid_view.js";
+import { mouse_tool } from "../features/mouse-tool.js";
 // Function to update the stats widget
-export function onCellClick({ x, y }, value, grid, e) {
+function onCellClick({ x, y }, value, grid, e) {
   mouse_tool.on_click({ x, y }, grid, e);
   grid.render();
 }
-export function updateHoverStats({ x, y }, value, grid) {
+function UIshowStatsOnHover({ x, y }, value, grid) {
   const cellStats = document.getElementById("cell-hover-stats");
   if (cellStats == null) {
     console.warn("to do: update hover stats");
@@ -20,14 +20,14 @@ export function updateHoverStats({ x, y }, value, grid) {
   `;
 }
 export class DataGrid {
-  constructor() {
+  constructor(dom) {
     // this.grid = new HistoryGrid();
     this.grid = new NewGrid();
     this.size = 15;
     this.offsetX = -1;
     this.offsetY = -1;
     this.cellSize = 20;
-    this.dom = document.getElementById("default-grid-view");
+    this.dom = dom;
     this.currentCell = null;
   }
   moreSize(){
@@ -156,7 +156,7 @@ export class DataGrid {
         cellElement.setAttribute("data-y", y);
         cellElement.onclick = (e) => onCellClick({ x, y }, cellValue, grid, e);
         cellElement.onmouseover = () =>
-          updateHoverStats({ x, y }, cellValue, grid);
+          UIshowStatsOnHover({ x, y }, cellValue, grid);
         if (cellValue != 0) cellElement.textContent = cellValue;
         else cellElement.textContent = "";
         if (cellValue > 0) {
